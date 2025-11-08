@@ -1,0 +1,10 @@
+[display]
+label_width = 15 # default:15
+green_until = 65 # default:65
+orange_until = 85 # default:85
+
+[disks]
+paths = ["/home"]
+
+[services]
+monitored = ["docker"]
