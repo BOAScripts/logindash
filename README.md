@@ -111,7 +111,7 @@ monitored = [
 ```
 
 - **display.label_width** – Width of the left‑hand label column. This ensure the values to be on the same x-axis
-- **display.green_until / orange_until** – Thresholds for colour coding the usage bars. (green from 0 to 65, orange from 66 to 85, rest is red)
+- **display.green_until / orange_until** – Thresholds for colour coding the usage percentages. (green from 0 to 65, orange from 66 to 85, rest is red)
 - **disks.paths** – Additional paths to display disk usage for.
 - **services.monitored** – Systemd services to monitor.
 
