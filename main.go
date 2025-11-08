@@ -39,39 +39,43 @@ type ServicesConfig struct {
 var (
 	headerStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(lipgloss.Color("86")).
+			Foreground(lipgloss.Color("#91d7e3")). // machiatto sky
 			BorderStyle(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("86")).
+			BorderForeground(lipgloss.Color("#91d7e3")). // machiatto sky
 			Padding(0, 1)
 
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(lipgloss.Color("39"))
+			Foreground(lipgloss.Color("#b7bdf8")) // macchiatto lavender
 
 	labelStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("86")).
+			Foreground(lipgloss.Color("#7dc4e4")). // macchiatto sapphire
+			Bold(true)
+
+	fqdnStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#eed49f")). // macchiatto yellow
 			Bold(true)
 
 	dimStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("240"))
+			Foreground(lipgloss.Color("##363a4f")) // macchiatto surface 0
 
 	activeStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("82"))
+			Foreground(lipgloss.Color("#a6da95")) // macchiatto green
 
 	inactiveStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("214"))
+			Foreground(lipgloss.Color("#ee99a0")) // macchiatto maroon
 
 	failedStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("196"))
+			Foreground(lipgloss.Color("#ed8796")) // macchiatto red
 
 	greenStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("82"))
+			Foreground(lipgloss.Color("#a6da95")) // macchiatto green
 
 	orangeStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("214"))
+			Foreground(lipgloss.Color("#f5a97f")) // macchiatto peach
 
 	redStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("196"))
+			Foreground(lipgloss.Color("#ed8796")) // macchiatto red
 
 	// Global vars
 	labelWidth  = 15
@@ -151,13 +155,9 @@ func displayInfo(config Config) {
 	fqdn := getFQDN()
 	lastLogin, lastIP := getLastLogin(currentUser.Username)
 
-	yellowStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("214")).
-		Bold(true)
-
 	header := fmt.Sprintf("%s@%s\n%s",
 		currentUser.Username,
-		yellowStyle.Render(fqdn),
+		fqdnStyle.Render(fqdn),
 		dimStyle.Render("Last login: "+lastLogin))
 
 	// Only add "From:" line if there's an IP
