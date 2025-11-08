@@ -116,11 +116,6 @@ monitored = [
 - **Thresholds** – Adjust `green_until` and `orange_until` to suit your monitoring style.
 - **Mount detection** – The program automatically scans `/mnt` for new mounts; you can add or remove paths in the config as needed.
 
-## Contributing
+## Disclaimer
 
-Pull requests are welcome!
-Please run `go vet ./...` and `golint ./...` before submitting.
-
-## License
-
-MIT © 2024 Your Name
+> This has been written with the help of some AIs (Claude Sonnet 4.5 & gpt-oss). Sorry for the slop

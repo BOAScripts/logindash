@@ -55,7 +55,7 @@ BIN_PATH="/usr/local/bin/logindash"
 echo "Installing binary to $BIN_PATH..."
 sudo cp "$TMP_DIR/logindash" "$BIN_PATH"
 sudo chmod 755 "$BIN_PATH"
-chmod +x "$BIN_PATH"
+sudo chmod +x "$BIN_PATH"
 
 # Install configuration -----------------------------------------
 CONFIG_URL="https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/refs/tags/${TAG}/config/config.toml"
