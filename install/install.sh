@@ -58,7 +58,7 @@ sudo chmod 755 "$BIN_PATH"
 sudo chmod +x "$BIN_PATH"
 
 # Install configuration -----------------------------------------
-CONFIG_URL="https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/refs/tags/${TAG}/config/config.toml"
+CONFIG_URL="https://raw.githubusercontent.com/BOAScripts/logindash/refs/heads/main/config/config.toml"
 DOT_CONFIG_DIR="$HOME/.config"
 CONFIG_DIR="$HOME/.config/logindash"
 CONFIG_FILE="$CONFIG_DIR/config.toml"
