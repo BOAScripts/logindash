@@ -8,6 +8,7 @@ import (
 	"os/user"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -227,7 +228,7 @@ func displayStorage(extraPaths []string) {
 	for _, path := range extraPaths {
 		if isMountPoint(path) {
 			used, total, percent := getDiskUsage(path)
-			label := path
+			label := path + ":"
 			fmt.Printf(format, labelStyle.Render("▸"),
 				label, used, total, colorizePercentageStr(percent))
 		}
@@ -238,14 +239,8 @@ func displayStorage(extraPaths []string) {
 		fmt.Println()
 		fmt.Println(titleStyle.Render("Storage (/mnt)"))
 		for _, path := range detectedMounts {
-			skip := false
-			for _, configPath := range extraPaths {
-				if path == configPath {
-					skip = true
-					break
-				}
-			}
-			if skip {
+			// Skip if path is already in extraPaths
+			if slices.Contains(extraPaths, path) {
 				continue
 			}
 
