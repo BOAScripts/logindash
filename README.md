@@ -79,10 +79,10 @@ logindash -config ~/.mylogindashconfig.toml
 
 ### Auto‑run on SSH login
 
-Add the following line at t he end of your `~/.bashrc`:
+Add the following lines in your `~/.ssh/rc`:
 
 ```bash
-if [ -f logindash ]; then
+if [ -e "/usr/local/bin/logindash" ]; then
     logindash
 fi
 ```

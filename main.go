@@ -266,7 +266,7 @@ func displayServices(services []string) {
 
 	fmt.Println(titleStyle.Render("Services"))
 
-	format := fmt.Sprintf("  %%s %%--%ds %%s\n", labelWidth)
+	format := fmt.Sprintf("  %%s %%--%ds \n      %%s\n", labelWidth)
 
 	for _, service := range services {
 		status, state := getServiceStatus(service)
@@ -275,13 +275,13 @@ func displayServices(services []string) {
 		switch state {
 		case "active":
 			marker = activeStyle.Render("●")
-			styledStatus = activeStyle.Render(status)
+			styledStatus = dimStyle.Render(status)
 		case "inactive":
 			marker = inactiveStyle.Render("○")
-			styledStatus = inactiveStyle.Render(status)
+			styledStatus = dimStyle.Render(status)
 		default:
 			marker = failedStyle.Render("✗")
-			styledStatus = failedStyle.Render(status)
+			styledStatus = dimStyle.Render(status)
 		}
 
 		label := service
