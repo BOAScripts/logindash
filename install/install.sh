@@ -48,7 +48,7 @@ TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 
 echo "Downloading $ASSET_NAME (tag $TAG)..."
-curl -L -o "$TMP_DIR/$ASSET_NAME" "$ASSET_URL"
+curl -s -L -o "$TMP_DIR/$ASSET_NAME" "$ASSET_URL"
 
 # Install binary ---------------------------------------------
 BIN_PATH="/usr/local/bin/logindash"
@@ -67,7 +67,7 @@ mkdir -p "$DOT_CONFIG_DIR"
 mkdir -p "$CONFIG_DIR"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
-  curl -L -o "$CONFIG_FILE" "$CONFIG_URL"
+  curl -s -L -o "$CONFIG_FILE" "$CONFIG_URL"
 else
   echo "Config file already exists at $CONFIG_FILE. Skipping."
 fi
