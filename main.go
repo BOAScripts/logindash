@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"os/user"
 	"path/filepath"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -140,7 +141,7 @@ func loadConfig(customPath string) Config {
 		currentUser, err := user.Current()
 		if err == nil {
 			configPath = filepath.Join(currentUser.HomeDir,
-				".config", "login-dash", "config.toml")
+				".config", "logindash", "config.toml")
 		}
 	}
 
@@ -480,18 +481,16 @@ func getServiceStatus(service string) (string, string) {
 	stateOut, _ := exec.Command("systemctl", "is-active", service).Output()
 	state := strings.TrimSpace(string(stateOut))
 
-	// Just return a formatted version of the state
-	var status string
-	switch state {
-	case "active":
-		status = "running"
-	case "inactive":
-		status = "stopped"
-	case "failed":
-		status = "failed"
-	default:
-		status = state
+	statusOut, _ := exec.Command("systemctl", "status", service).Output()
+	re := regexp.MustCompile(`Active: ([^\n]+)`)
+	matches := re.FindStringSubmatch(string(statusOut))
+
+	if len(matches) >= 2 {
+		status := strings.TrimSpace(matches[1])
+		status = strings.ReplaceAll(status, "(", "")
+		status = strings.ReplaceAll(status, ")", "")
+		return status, state
 	}
 
-	return status, state
+	return state, state
 }
