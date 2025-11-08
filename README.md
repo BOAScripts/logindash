@@ -8,19 +8,29 @@ It is written in Go and renders a coloured, easy‑to‑read summary of:
 - **Storage** – root and mounted drives
 - **Services** – status of user‑selected systemd services
 
-The dashboard is fully configurable via a TOML file and can be integrated into your
+The dashboard is configurable via a TOML file and can be integrated into your
 `~/.ssh/rc` or `~/.bashrc` so that it displays automatically on login.
 
 ## Features
 
 | Feature | Description |
 |---------|-------------|
-| **Custom labels** | Set the width of the labels and colour thresholds in the config. |
 | **Dynamic storage** | Scan `/mnt` for new mounts automatically. |
 | **Service monitoring** | Show the status of any systemd service you care about. |
-| **Portable** | No external dependencies beyond standard Linux utilities (`top`, `free`, `df`, `systemctl`, etc.). |
+| **Portable** | Standard Linux utilities depedencies (`top`, `free`, `df`, `systemctl`, etc.). |
+| **Custom labels** | Set the width of the labels and colour thresholds in the config. |
 
 ## Installation
+
+### Automated
+
+> Review the `install.sh` code
+
+```bash
+curl -fsSL ...| bash
+```
+
+### Build it yourself
 
 1. **Clone the repo**
 
@@ -41,17 +51,24 @@ The dashboard is fully configurable via a TOML file and can be integrated into y
    sudo mv logindash /usr/local/bin/
    ```
 
+4. **Copy/Edit the config file**
+
+  ```bash
+  mkdir -p ~/.config/logindash
+  cp config/config.toml .config/logindash/config.toml
+  ```
+
 ## Usage
 
 ```bash
-logindash [OPTIONS]
+logindash
 ```
 
 ### Options
 
-- `-config string` – Path to the configuration file.
+- `--config string` – Path to the configuration file.
   Default: `~/.config/logindash/config.toml`.
-- `-h`, `-help` – Show help.
+- `-h`, `--help` – Show help.
 
 ```bash
 logindash -config ~/.config/logindash/config.toml

@@ -185,14 +185,14 @@ func displaySystem() {
 
 	format := fmt.Sprintf("  %%s %%--%ds %%s\n", labelWidth)
 
-	fmt.Printf(format, labelStyle.Render("▸"), "Uptime:", uptime)
+	fmt.Printf(format, labelStyle.Render("▸"), "Uptime", uptime)
 
 	formatCPU := fmt.Sprintf("  %%s %%--%ds %%s %%s\n", labelWidth)
-	fmt.Printf(formatCPU, labelStyle.Render("▸"), "CPU:",
+	fmt.Printf(formatCPU, labelStyle.Render("▸"), "CPU",
 		cpucores, colorizePercentage(cpu))
 
 	formatMem := fmt.Sprintf("  %%s %%--%ds %%s/%%s %%s\n", labelWidth)
-	fmt.Printf(formatMem, labelStyle.Render("▸"), "RAM:",
+	fmt.Printf(formatMem, labelStyle.Render("▸"), "RAM",
 		memUsed, memTotal, colorizePercentage(memPercent))
 	fmt.Println()
 }
@@ -208,10 +208,10 @@ func displayNetwork() {
 	format := fmt.Sprintf("  %%s %%--%ds %%s\n", labelWidth)
 	formatIP := fmt.Sprintf("  %%s %%--%ds %%s (%%s)\n", labelWidth)
 
-	fmt.Printf(formatIP, labelStyle.Render("▸"), "IP Address:",
+	fmt.Printf(formatIP, labelStyle.Render("▸"), "IP Address",
 		ipAddr, iface)
-	fmt.Printf(format, labelStyle.Render("▸"), "Gateway:", gateway)
-	fmt.Printf(format, labelStyle.Render("▸"), "DNS:", dns)
+	fmt.Printf(format, labelStyle.Render("▸"), "Gateway", gateway)
+	fmt.Printf(format, labelStyle.Render("▸"), "DNS", dns)
 	fmt.Println()
 }
 
@@ -221,13 +221,13 @@ func displayStorage(extraPaths []string) {
 	format := fmt.Sprintf("  %%s %%--%ds %%s/%%s %%s\n", labelWidth)
 
 	used, total, percent := getDiskUsage("/")
-	fmt.Printf(format, labelStyle.Render("▸"), "/:",
+	fmt.Printf(format, labelStyle.Render("▸"), "/",
 		used, total, colorizePercentageStr(percent))
 
 	for _, path := range extraPaths {
 		if isMountPoint(path) {
 			used, total, percent := getDiskUsage(path)
-			label := path + ":"
+			label := path
 			fmt.Printf(format, labelStyle.Render("▸"),
 				label, used, total, colorizePercentageStr(percent))
 		}
@@ -251,7 +251,7 @@ func displayStorage(extraPaths []string) {
 
 			if isMountPoint(path) {
 				used, total, percent := getDiskUsage(path)
-				label := path + ":"
+				label := path
 				fmt.Printf(format, labelStyle.Render("▸"),
 					label, used, total, colorizePercentageStr(percent))
 			}
@@ -285,7 +285,7 @@ func displayServices(services []string) {
 			styledStatus = failedStyle.Render(status)
 		}
 
-		label := service + ":"
+		label := service
 		fmt.Printf(format, marker, label, styledStatus)
 	}
 	fmt.Println()
