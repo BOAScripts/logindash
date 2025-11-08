@@ -46,10 +46,14 @@ var (
 
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(lipgloss.Color("#b7bdf8")) // macchiatto lavender
+			Foreground(lipgloss.Color("#8bd5ca")) // macchiatto teal
 
 	labelStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#7dc4e4")). // macchiatto sapphire
+			Foreground(lipgloss.Color("#c6a0f6")). // macchiatto mauve
+			Bold(true)
+
+	userStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#f5a97f")). // macchiatto peach
 			Bold(true)
 
 	fqdnStyle = lipgloss.NewStyle().
@@ -57,7 +61,7 @@ var (
 			Bold(true)
 
 	dimStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("##363a4f")) // macchiatto surface 0
+			Foreground(lipgloss.Color("#494d64")) // macchiatto surface 1
 
 	activeStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("#a6da95")) // macchiatto green
@@ -77,7 +81,7 @@ var (
 	redStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("#ed8796")) // macchiatto red
 
-	// Global vars
+	// Default vars
 	labelWidth  = 15
 	GreenUntil  = 65
 	OrangeUntil = 85
@@ -156,7 +160,7 @@ func displayInfo(config Config) {
 	lastLogin, lastIP := getLastLogin(currentUser.Username)
 
 	header := fmt.Sprintf("%s@%s\n%s",
-		currentUser.Username,
+		userStyle.Render(currentUser.Username),
 		fqdnStyle.Render(fqdn),
 		dimStyle.Render("Last login: "+lastLogin))
 
