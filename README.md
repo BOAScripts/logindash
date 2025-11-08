@@ -27,7 +27,7 @@ The dashboard is configurable via a TOML file and can be integrated into your
 > Review the `install.sh` code
 
 ```bash
-curl -fsSL ...| bash
+curl -fsSL "https://raw.githubusercontent.com/BOAScripts/logindash/refs/heads/main/install/install.sh" | bash
 ```
 
 ### Build it yourself
@@ -35,7 +35,7 @@ curl -fsSL ...| bash
 1. **Clone the repo**
 
    ```bash
-   git clone https://github.com/yourusername/logindash.git
+   git clone https://github.com/BOAScripts/logindash.git
    cd logindash/
    ```
 
@@ -66,31 +66,36 @@ logindash
 
 ### Options
 
-- `--config string` – Path to the configuration file.
-  Default: `~/.config/logindash/config.toml`.
-- `-h`, `--help` – Show help.
+| Options | Description |
+| -- | -- |
+| `--config <string>` | Path to the configuration file|
+| `-h`, `--help` | Show help |
+
+Default config path: `~/.config/logindash/config.toml`.
 
 ```bash
-logindash -config ~/.config/logindash/config.toml
+logindash -config ~/.mylogindashconfig.toml
 ```
 
 ### Auto‑run on SSH login
 
-Add the following line to `~/.ssh/rc` (or `~/.bashrc` if you use that):
+Add the following line at t he end of your `~/.bashrc`:
 
 ```bash
-/usr/local/bin/logindash
+if [ -f logindash ]; then
+    logindash
+fi
 ```
 
 ## Configuration
 
-Create the directory `~/.config/logindash/` and add `config.toml`:
+Open `~/.config/logindash/config.toml`:
 
 ```toml
 [display]
-label_width  = 15
-green_until  = 65
-orange_until = 85
+label_width  = 15 # <- Default value if ommitted
+green_until  = 65 # <- Default value if ommitted
+orange_until = 85 # <- Default value if ommitted
 
 [disks]
 paths = [
@@ -105,16 +110,16 @@ monitored = [
 ]
 ```
 
-- **display.label_width** – Width of the left‑hand label column.
-- **display.green_until / orange_until** – Thresholds for colour coding the usage bars.
+- **display.label_width** – Width of the left‑hand label column. This ensure the values to be on the same x-axis
+- **display.green_until / orange_until** – Thresholds for colour coding the usage bars. (green from 0 to 65, orange from 66 to 85, rest is red)
 - **disks.paths** – Additional paths to display disk usage for.
 - **services.monitored** – Systemd services to monitor.
 
 ## Customisation
 
-- **Colours** – Edit the `lipgloss` styles in `main.go` to change the palette.
 - **Thresholds** – Adjust `green_until` and `orange_until` to suit your monitoring style.
-- **Mount detection** – The program automatically scans `/mnt` for new mounts; you can add or remove paths in the config as needed.
+- **Mount detection** – The program automatically scans `/mnt` for new mounts. You can add paths in the config as needed.
+- **Colours** – Edit the `lipgloss` styles in `main.go` to change the palette.
 
 ## Disclaimer
 
