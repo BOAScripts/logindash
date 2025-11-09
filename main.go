@@ -259,28 +259,25 @@ func displayServices(services []string) {
 
 	fmt.Println(titleStyle.Render("Services"))
 
-	format := fmt.Sprintf("%%s %%s: %%s %%s\n")
+	format := fmt.Sprintf("%%s %%s %%s\n")
 
 	for _, service := range services {
-		state, status, statusSince := getServiceStatus(service)
+		state, statusSince := getServiceStatus(service)
 
-		var marker, styledStatus, styledStatusSince string
+		var marker, styledStatusSince string
 		switch state {
 		case "active":
 			marker = activeStyle.Render("●")
-			styledStatus = activeStyle.Render(status)
 			styledStatusSince = dimStyle.Render(statusSince)
 		case "inactive":
 			marker = inactiveStyle.Render("○")
-			styledStatus = inactiveStyle.Render(state)
 		default:
 			marker = failedStyle.Render("✗")
-			styledStatus = failedStyle.Render(state)
 			styledStatusSince = dimStyle.Render(statusSince)
 		}
 
 		label := service
-		fmt.Printf(format, marker, label, styledStatus, styledStatusSince)
+		fmt.Printf(format, marker, label, styledStatusSince)
 	}
 	fmt.Println()
 }
@@ -478,7 +475,7 @@ func autoDetectMounts() []string {
 	return mounts
 }
 
-func getServiceStatus(service string) (string, string, string) {
+func getServiceStatus(service string) (string, string) {
 	stateOut, _ := exec.Command("systemctl", "is-active", service).Output()
 	state := strings.TrimSpace(string(stateOut))
 
@@ -487,10 +484,9 @@ func getServiceStatus(service string) (string, string, string) {
 	matches := re.FindStringSubmatch(string(statusOut))
 
 	if len(matches) >= 4 {
-		status := fmt.Sprintf("%s (%s)", matches[1], matches[2])
 		statusSince := fmt.Sprintf("since %s", matches[3])
-		return state, status, statusSince
+		return state, statusSince
 	}
 
-	return state, "", ""
+	return state, ""
 }
