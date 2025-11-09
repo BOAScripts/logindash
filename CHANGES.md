@@ -1,4 +1,4 @@
-# List a potential improvments
+# List a potential improvements
 
 ## Colors from config.toml
 
@@ -15,7 +15,7 @@ System
   > OS      debian 13 (trixie)
 ```
 
-## Service display improvment
+## Service display improvement
 
 Change the `status` content and rendering.
 
@@ -58,13 +58,13 @@ if option set in config.toml, match the selection
 
 ```toml
 [display]
-    [options]
-    "system.os": true
-    "system.uptime": true
-    "system.cpu": true
-    "system.ram": true
-    "system.ip": true
-    "system.gateway" :true
-    "system.dns" :true
-    "storage.root": true
+[display.options]
+    "system.os" = true
+    "system.uptime" = true
+    "system.cpu" = true
+    "system.ram" = true
+    "system.ip" = true
+    "system.gateway" = true
+    "system.dns" = true
+    "storage.root" = true
 ```
