@@ -209,18 +209,6 @@ func initStyles(colors ColorsConfig) {
 		Bold(true).
 		Foreground(lipgloss.Color(colors.Title))
 
-	// Initialize styles with structure + colors
-	headerStyle = lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color(colors.Header)).
-		BorderStyle(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color(colors.Header)).
-		Padding(0, 1)
-
-	titleStyle = lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color(colors.Title))
-
 	labelStyle = lipgloss.NewStyle().
 		Bold(true).
 		Foreground(lipgloss.Color(colors.Label))
