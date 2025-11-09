@@ -4,14 +4,8 @@ green_until = 65 # default:65
 orange_until = 85 # default:85
 
 [display.options]
-"system.os" = true
-"system.uptime" = true
-"system.cpu" = true
-"system.ram" = true
-"system.ip" = true
 "system.gateway" = false
 "system.dns" = false
-"storage.root" = true
 
 [colors]
 header = "#ea76cb"

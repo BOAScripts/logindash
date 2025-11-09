@@ -251,8 +251,16 @@ func shouldDisplay(config Config, key string) bool {
 		return true
 	}
 
-	// Check if key exists and is true, default to false if not set
-	return config.Display.Options[key]
+	// Check if key exists in the map
+	value, exists := config.Display.Options[key]
+
+	// If key doesn't exist, default to true (display it)
+	if !exists {
+		return true
+	}
+
+	// Otherwise, return the configured value
+	return value
 }
 
 func displayInfo(config Config) {
