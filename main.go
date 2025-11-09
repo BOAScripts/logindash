@@ -398,6 +398,8 @@ func displayServices(services []string) {
 			styledStatusSince = dimStyle.Render(statusSince)
 		case "inactive":
 			marker = inactiveStyle.Render("○")
+		case "notfound":
+			marker = failedStyle.Render("?")
 		default:
 			marker = failedStyle.Render("✗")
 			styledStatusSince = dimStyle.Render(statusSince)
@@ -603,17 +605,24 @@ func autoDetectMounts() []string {
 }
 
 func getServiceStatus(service string) (string, string) {
-	stateOut, _ := exec.Command("systemctl", "is-active", service).Output()
-	state := strings.TrimSpace(string(stateOut))
+	statusOut, err := exec.Command("systemctl", "status", service).CombinedOutput()
+	statusStr := string(statusOut)
+	// if service does not exists
+	if err != nil && strings.Contains(statusStr, "could not be found") {
+		return "notfound", ""
+	} else {
+		// Get the active state
+		stateOut, _ := exec.Command("systemctl", "is-active", service).Output()
+		state := strings.TrimSpace(string(stateOut))
 
-	statusOut, _ := exec.Command("systemctl", "status", service).Output()
-	re := regexp.MustCompile(`Active: ([^\s]+) \(([^)]+)\) since [^;]+; (.+)`)
-	matches := re.FindStringSubmatch(string(statusOut))
+		// Parse the status output for timing info
+		re := regexp.MustCompile(`Active: ([^\s]+) \(([^)]+)\) since [^;]+; (.+)`)
+		matches := re.FindStringSubmatch(statusStr)
 
-	if len(matches) >= 4 {
-		statusSince := fmt.Sprintf("since %s", matches[3])
-		return state, statusSince
+		if len(matches) >= 4 {
+			statusSince := fmt.Sprintf("since %s", matches[3])
+			return state, statusSince
+		}
+		return state, ""
 	}
-
-	return state, ""
 }
