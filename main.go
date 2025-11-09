@@ -245,6 +245,16 @@ func initStyles(colors ColorsConfig) {
 
 }
 
+func shouldDisplay(config Config, key string) bool {
+	// If no options configured, display everything
+	if len(config.Display.Options) == 0 {
+		return true
+	}
+
+	// Check if key exists and is true, default to false if not set
+	return config.Display.Options[key]
+}
+
 func displayInfo(config Config) {
 	currentUser, _ := user.Current()
 	fqdn := getFQDN()
@@ -263,55 +273,73 @@ func displayInfo(config Config) {
 	fmt.Println(headerStyle.Render(header))
 	fmt.Println()
 
-	displaySystem()
-	displayStorage(config.Disks.Paths)
+	displaySystem(config)
+	displayStorage(config, config.Disks.Paths)
 	displayServices(config.Services.Monitored)
 
 	fmt.Println(dimStyle.Render(strings.Repeat("─", 50)))
 }
 
-func displaySystem() {
+func displaySystem(config Config) {
 	fmt.Println(titleStyle.Render("System"))
 
-	OSInfo := getOSInfo()
-	uptime := getUptime()
-	cpu := getCPUUsage()
-	cpucores := getCPUCores()
-	memUsed, memTotal, memPercent := getMemoryUsage()
-	iface := getDefaultInterface()
-	ipAddr := getIPAddress(iface)
-	gateway := getGateway()
-	dns := getDNSServers()
-
 	format := fmt.Sprintf("  %%s %%--%ds %%s\n", labelWidth)
-	fmt.Printf(format, labelStyle.Render("▸"), "OS", OSInfo)
-	fmt.Printf(format, labelStyle.Render("▸"), "Uptime", uptime)
+	if shouldDisplay(config, "system.os") {
+		OSInfo := getOSInfo()
+		fmt.Printf(format, labelStyle.Render("▸"), "OS", OSInfo)
+	}
 
-	formatCPU := fmt.Sprintf("  %%s %%--%ds %%s %%s\n", labelWidth)
-	fmt.Printf(formatCPU, labelStyle.Render("▸"), "CPU",
-		cpucores, colorizePercentage(cpu))
+	if shouldDisplay(config, "system.uptime") {
+		uptime := getUptime()
+		fmt.Printf(format, labelStyle.Render("▸"), "Uptime", uptime)
+	}
 
-	formatMem := fmt.Sprintf("  %%s %%--%ds %%s/%%s %%s\n", labelWidth)
-	fmt.Printf(formatMem, labelStyle.Render("▸"), "RAM",
-		memUsed, memTotal, colorizePercentage(memPercent))
+	if shouldDisplay(config, "system.cpu") {
+		cpu := getCPUUsage()
+		cpucores := getCPUCores()
+		formatCPU := fmt.Sprintf("  %%s %%--%ds %%s %%s\n", labelWidth)
+		fmt.Printf(formatCPU, labelStyle.Render("▸"), "CPU",
+			cpucores, colorizePercentage(cpu))
+	}
 
-	formatIP := fmt.Sprintf("  %%s %%--%ds %%s (%%s)\n", labelWidth)
-	fmt.Printf(formatIP, labelStyle.Render("▸"), "IP Address",
-		ipAddr, iface)
-	fmt.Printf(format, labelStyle.Render("▸"), "Gateway", gateway)
-	fmt.Printf(format, labelStyle.Render("▸"), "DNS", dns)
+	if shouldDisplay(config, "system.ram") {
+		memUsed, memTotal, memPercent := getMemoryUsage()
+		formatMem := fmt.Sprintf("  %%s %%--%ds %%s/%%s %%s\n", labelWidth)
+		fmt.Printf(formatMem, labelStyle.Render("▸"), "RAM",
+			memUsed, memTotal, colorizePercentage(memPercent))
+	}
+
+	if shouldDisplay(config, "system.ip") {
+		iface := getDefaultInterface()
+		ipAddr := getIPAddress(iface)
+		formatIP := fmt.Sprintf("  %%s %%--%ds %%s (%%s)\n", labelWidth)
+		fmt.Printf(formatIP, labelStyle.Render("▸"), "IP Address",
+			ipAddr, iface)
+	}
+
+	if shouldDisplay(config, "system.gateway") {
+		gateway := getGateway()
+		fmt.Printf(format, labelStyle.Render("▸"), "Gateway", gateway)
+	}
+
+	if shouldDisplay(config, "system.dns") {
+		dns := getDNSServers()
+		fmt.Printf(format, labelStyle.Render("▸"), "DNS", dns)
+	}
 
 	fmt.Println()
 }
 
-func displayStorage(extraPaths []string) {
+func displayStorage(config Config, extraPaths []string) {
 	fmt.Println(titleStyle.Render("Storage"))
 
 	format := fmt.Sprintf("  %%s %%--%ds %%s/%%s %%s\n", labelWidth)
 
-	used, total, percent := getDiskUsage("/")
-	fmt.Printf(format, labelStyle.Render("▸"), "/",
-		used, total, colorizePercentageStr(percent))
+	if shouldDisplay(config, "storage.root") {
+		used, total, percent := getDiskUsage("/")
+		fmt.Printf(format, labelStyle.Render("▸"), "/",
+			used, total, colorizePercentageStr(percent))
+	}
 
 	for _, path := range extraPaths {
 		if isMountPoint(path) {

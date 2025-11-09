@@ -3,8 +3,18 @@ label_width = 15 # default:15
 green_until = 65 # default:65
 orange_until = 85 # default:85
 
+[display.options]
+"system.os" = true
+"system.uptime" = true
+"system.cpu" = true
+"system.ram" = true
+"system.ip" = true
+"system.gateway" = false
+"system.dns" = false
+"storage.root" = true
+
 [colors]
-header = "#91d7e3"
+header = "#ea76cb"
 title = "#8bd5ca"
 label = "#c6a0f6"
 user = "#f5a97f"
