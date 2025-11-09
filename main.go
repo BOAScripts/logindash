@@ -39,9 +39,10 @@ type ColorsConfig struct {
 }
 
 type DisplayConfig struct {
-	LabelWidth  int `toml:"label_width"`
-	GreenUntil  int `toml:"green_until"`
-	OrangeUntil int `toml:"orange_until"`
+	LabelWidth  int             `toml:"label_width"`
+	GreenUntil  int             `toml:"green_until"`
+	OrangeUntil int             `toml:"orange_until"`
+	Options     map[string]bool `toml:"options"`
 }
 
 type DisksConfig struct {
