@@ -259,26 +259,28 @@ func displayServices(services []string) {
 
 	fmt.Println(titleStyle.Render("Services"))
 
-	format := fmt.Sprintf("  %%s %%--%ds \n      %%s\n", labelWidth)
+	format := fmt.Sprintf("%%s %%s: %%s %%s\n")
 
 	for _, service := range services {
-		status, state := getServiceStatus(service)
+		state, status, statusSince := getServiceStatus(service)
 
-		var marker, styledStatus string
+		var marker, styledStatus, styledStatusSince string
 		switch state {
 		case "active":
 			marker = activeStyle.Render("●")
-			styledStatus = dimStyle.Render(status)
+			styledStatus = activeStyle.Render(status)
+			styledStatusSince = dimStyle.Render(statusSince)
 		case "inactive":
 			marker = inactiveStyle.Render("○")
-			styledStatus = dimStyle.Render(status)
+			styledStatus = inactiveStyle.Render(state)
 		default:
 			marker = failedStyle.Render("✗")
-			styledStatus = dimStyle.Render(status)
+			styledStatus = failedStyle.Render(state)
+			styledStatusSince = dimStyle.Render(statusSince)
 		}
 
 		label := service
-		fmt.Printf(format, marker, label, styledStatus)
+		fmt.Printf(format, marker, label, styledStatus, styledStatusSince)
 	}
 	fmt.Println()
 }
@@ -476,20 +478,19 @@ func autoDetectMounts() []string {
 	return mounts
 }
 
-func getServiceStatus(service string) (string, string) {
+func getServiceStatus(service string) (string, string, string) {
 	stateOut, _ := exec.Command("systemctl", "is-active", service).Output()
 	state := strings.TrimSpace(string(stateOut))
 
 	statusOut, _ := exec.Command("systemctl", "status", service).Output()
-	re := regexp.MustCompile(`Active: ([^\n]+)`)
+	re := regexp.MustCompile(`Active: ([^\s]+) \(([^)]+)\) since [^;]+; (.+)`)
 	matches := re.FindStringSubmatch(string(statusOut))
 
-	if len(matches) >= 2 {
-		status := strings.TrimSpace(matches[1])
-		status = strings.ReplaceAll(status, "(", "")
-		status = strings.ReplaceAll(status, ")", "")
-		return status, state
+	if len(matches) >= 4 {
+		status := fmt.Sprintf("%s (%s)", matches[1], matches[2])
+		statusSince := fmt.Sprintf("since %s", matches[3])
+		return state, status, statusSince
 	}
 
-	return state, state
+	return state, "", ""
 }
