@@ -94,12 +94,13 @@ func main() {
 	flag.BoolVar(showHelp, "h", false, "Show help message (shorthand)")
 
 	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Repo: https://github.com/BOAScripts/logindash \n\n")
 		fmt.Fprintf(os.Stderr, "Usage: %s [OPTIONS]\n\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "LoginDash - Shows system information on login\n\n")
 		fmt.Fprintf(os.Stderr, "Options:\n")
-		fmt.Fprintf(os.Stderr, "  -config string\n")
+		fmt.Fprintf(os.Stderr, "  --config string\n")
 		fmt.Fprintf(os.Stderr, "        Path to config file (default: ~/.config/login-dash/config.toml)\n")
-		fmt.Fprintf(os.Stderr, "  -h, -help\n")
+		fmt.Fprintf(os.Stderr, "  -h, --help\n")
 		fmt.Fprintf(os.Stderr, "        Show this help message\n\n")
 		fmt.Fprintf(os.Stderr, "Examples:\n")
 		fmt.Fprintf(os.Stderr, "  %s\n", os.Args[0])
