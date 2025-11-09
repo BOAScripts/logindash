@@ -19,6 +19,12 @@ The dashboard is configurable via a TOML file and can be integrated into your
 | **Portable** | Standard Linux utilities depedencies (`top`, `free`, `df`, `systemctl`, etc.). |
 | **Customizable** | Remove unwanted labels, change colors or adjust `label_width` via `config.toml` |
 
+## Showcase
+
+|Debian in console|Debian through ssh with ghostty + nerdfonts|Arch local - all labels + added mountpath|
+| --------------- | ----------------------------------------- | --------------------------------------- |
+| ![debian-console](img/debian-console.png "debian-console") | ![debian-ssh-nerdfonts](img/debian-ssh-nerdfonts.png "debian-ssh-nerdfonts") | ![arch-ghostty-nerdfont-full](img/arch-ghostty-nerdfont-full.png "arch-ghostty-nerdfont-full") |
+
 ## Installation/Updating
 
 ### Automated
