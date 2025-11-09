@@ -42,6 +42,8 @@ Instead of displaying the whole line of the "Active:" (`status`) on new line:
 
 ### Compact System & Network
 
+- [x] Done
+
 ```
 System
   > OS        {os_string}
