@@ -6,13 +6,15 @@ Ability to change colors definition from the `config.toml`
 
 ## System OS info
 
+- [x] Done
+
 Get an OS info label from /etc/os-release in Sytem title as the first label
 ```
 System
-  > OS      {ID} {VERSION}
+  > OS      {PRETTY_NAME}
 
 System
-  > OS      debian 13 (trixie)
+  > OS      Debian GNU/Linux 13 (trixie)
 ```
 
 ## Service display improvement

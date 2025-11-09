@@ -173,7 +173,6 @@ func displayInfo(config Config) {
 	fmt.Println()
 
 	displaySystem()
-	displayNetwork()
 	displayStorage(config.Disks.Paths)
 	displayServices(config.Services.Monitored)
 
@@ -188,6 +187,10 @@ func displaySystem() {
 	cpu := getCPUUsage()
 	cpucores := getCPUCores()
 	memUsed, memTotal, memPercent := getMemoryUsage()
+	iface := getDefaultInterface()
+	ipAddr := getIPAddress(iface)
+	gateway := getGateway()
+	dns := getDNSServers()
 
 	format := fmt.Sprintf("  %%s %%--%ds %%s\n", labelWidth)
 	fmt.Printf(format, labelStyle.Render("▸"), "OS", OSInfo)
@@ -200,24 +203,13 @@ func displaySystem() {
 	formatMem := fmt.Sprintf("  %%s %%--%ds %%s/%%s %%s\n", labelWidth)
 	fmt.Printf(formatMem, labelStyle.Render("▸"), "RAM",
 		memUsed, memTotal, colorizePercentage(memPercent))
-	fmt.Println()
-}
 
-func displayNetwork() {
-	fmt.Println(titleStyle.Render("Network"))
-
-	iface := getDefaultInterface()
-	ipAddr := getIPAddress(iface)
-	gateway := getGateway()
-	dns := getDNSServers()
-
-	format := fmt.Sprintf("  %%s %%--%ds %%s\n", labelWidth)
 	formatIP := fmt.Sprintf("  %%s %%--%ds %%s (%%s)\n", labelWidth)
-
 	fmt.Printf(formatIP, labelStyle.Render("▸"), "IP Address",
 		ipAddr, iface)
 	fmt.Printf(format, labelStyle.Render("▸"), "Gateway", gateway)
 	fmt.Printf(format, labelStyle.Render("▸"), "DNS", dns)
+
 	fmt.Println()
 }
 
