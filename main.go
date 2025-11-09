@@ -225,7 +225,7 @@ func displayStorage(extraPaths []string) {
 	for _, path := range extraPaths {
 		if isMountPoint(path) {
 			used, total, percent := getDiskUsage(path)
-			label := path + ":"
+			label := path
 			fmt.Printf(format, labelStyle.Render("▸"),
 				label, used, total, colorizePercentageStr(percent))
 		}
@@ -259,7 +259,7 @@ func displayServices(services []string) {
 
 	fmt.Println(titleStyle.Render("Services"))
 
-	format := fmt.Sprintf("%%s %%s %%s\n")
+	format := fmt.Sprintf("  %%s %%s %%s\n")
 
 	for _, service := range services {
 		state, statusSince := getServiceStatus(service)

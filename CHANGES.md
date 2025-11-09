@@ -4,56 +4,7 @@
 
 Ability to change colors definition from the `config.toml`
 
-## System OS info
-
-- [x] Done
-
-Get an OS info label from /etc/os-release in Sytem title as the first label
-```
-System
-  > OS      {PRETTY_NAME}
-
-System
-  > OS      Debian GNU/Linux 13 (trixie)
-```
-
-## Service display improvement
-
-Change the `status` content and rendering.
-
-Instead of displaying the whole line of the "Active:" (`status`) on new line:
-
-- display a shorter string on same line (do not apply label_width as service name can be long)
-- same color coded of `active (running)`, `inactive (dead)`, ... as the `marker`
-- dimmed relative time. Content after `;`.
-
-```
-# From
-● xe-linux-distribution
-    active running since Sun 2025-11-09 09:38:17 CET; 6min ago
-○ xo-server
-    inactive dead
-# To
-● xe-linux-distribution: active (running) since 6min ago
-○ xo-server: inactive (dead)
-```
-
 ## Refactor what's displayed
-
-### Compact System & Network
-
-- [x] Done
-
-```
-System
-  > OS        {os_string}
-  > Uptime    {uptime_string}
-  > CPU       {cpu_cores} ({cpu_usage}%)
-  > RAM       {current_ram}/{total_ram} ({ram_usage}%)
-  > IP        {ip_addr}/{cidr_subnetmask} ({interface})
-  > Gateway   {gateway}
-  > DNS       {dns}
-```
 
 ### Ability to choose what's displayed from config.toml
 

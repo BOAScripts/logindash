@@ -20,7 +20,7 @@ The dashboard is configurable via a TOML file and can be integrated into your
 | **Portable** | Standard Linux utilities depedencies (`top`, `free`, `df`, `systemctl`, etc.). |
 | **Custom labels** | Set the width of the labels and colour thresholds in the config. |
 
-## Installation
+## Installation/Updating
 
 ### Automated
 
