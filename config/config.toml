@@ -10,6 +10,6 @@ orange_until = 85 # default:85
 
 # [services]
 # monitored = [
-#     "ssh",
+#     "sshd",
 #     "docker"
 # ]

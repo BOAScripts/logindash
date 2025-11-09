@@ -183,13 +183,14 @@ func displayInfo(config Config) {
 func displaySystem() {
 	fmt.Println(titleStyle.Render("System"))
 
+	OSInfo := getOSInfo()
 	uptime := getUptime()
 	cpu := getCPUUsage()
 	cpucores := getCPUCores()
 	memUsed, memTotal, memPercent := getMemoryUsage()
 
 	format := fmt.Sprintf("  %%s %%--%ds %%s\n", labelWidth)
-
+	fmt.Printf(format, labelStyle.Render("▸"), "OS", OSInfo)
 	fmt.Printf(format, labelStyle.Render("▸"), "Uptime", uptime)
 
 	formatCPU := fmt.Sprintf("  %%s %%--%ds %%s %%s\n", labelWidth)
@@ -357,6 +358,12 @@ func getLastLogin(username string) (string, string) {
 		}
 	}
 	return "Unknown", ""
+}
+
+func getOSInfo() string {
+	out, _ := exec.Command("bash", "-c",
+		"cat /etc/os-release | grep 'PRETTY_NAME' | awk  -F '[\"\"]' '{print $2}'").Output()
+	return strings.TrimSpace(string(out))
 }
 
 func getUptime() string {
