@@ -3,13 +3,26 @@ label_width = 15 # default:15
 green_until = 65 # default:65
 orange_until = 85 # default:85
 
-# [disks]
-# paths = [
-#     "/home"
-# ]
+[colors]
+header = "#91d7e3"
+title = "#8bd5ca"
+label = "#c6a0f6"
+user = "#f5a97f"
+fqdn = "#eed49f"
+dim = "#494d64"
+active = "#a6da95"
+inactive = "#ee99a0"
+failed = "#ed8796"
+green = "#a6da95"
+orange = "#f5a97f"
+red = "#ed8796"
 
-# [services]
-# monitored = [
-#     "sshd",
-#     "docker"
-# ]
+[disks]
+paths = ["/home"]
+
+[services]
+monitored = [
+    "docker",
+    "sshd",
+    "doesnotexists"
+    ]

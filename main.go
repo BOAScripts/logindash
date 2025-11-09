@@ -18,8 +18,24 @@ import (
 
 type Config struct {
 	Display  DisplayConfig  `toml:"display"`
+	Colors   ColorsConfig   `toml:"colors"`
 	Disks    DisksConfig    `toml:"disks"`
 	Services ServicesConfig `toml:"services"`
+}
+
+type ColorsConfig struct {
+	Header   string `toml:"header"`
+	Title    string `toml:"title"`
+	Label    string `toml:"label"`
+	User     string `toml:"user"`
+	FQDN     string `toml:"fqdn"`
+	Dim      string `toml:"dim"`
+	Active   string `toml:"active"`
+	Inactive string `toml:"inactive"`
+	Failed   string `toml:"failed"`
+	Green    string `toml:"green"`
+	Orange   string `toml:"orange"`
+	Red      string `toml:"red"`
 }
 
 type DisplayConfig struct {
@@ -37,55 +53,40 @@ type ServicesConfig struct {
 }
 
 var (
-	headerStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#91d7e3")). // machiatto sky
-			BorderStyle(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#91d7e3")). // machiatto sky
-			Padding(0, 1)
-
-	titleStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#8bd5ca")) // macchiatto teal
-
-	labelStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#c6a0f6")). // macchiatto mauve
-			Bold(true)
-
-	userStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#f5a97f")). // macchiatto peach
-			Bold(true)
-
-	fqdnStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#eed49f")). // macchiatto yellow
-			Bold(true)
-
-	dimStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#494d64")) // macchiatto surface 1
-
-	activeStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#a6da95")) // macchiatto green
-
-	inactiveStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#ee99a0")) // macchiatto maroon
-
-	failedStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#ed8796")) // macchiatto red
-
-	greenStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#a6da95")) // macchiatto green
-
-	orangeStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#f5a97f")) // macchiatto peach
-
-	redStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#ed8796")) // macchiatto red
+	headerStyle   lipgloss.Style
+	titleStyle    lipgloss.Style
+	labelStyle    lipgloss.Style
+	userStyle     lipgloss.Style
+	fqdnStyle     lipgloss.Style
+	dimStyle      lipgloss.Style
+	activeStyle   lipgloss.Style
+	inactiveStyle lipgloss.Style
+	failedStyle   lipgloss.Style
+	greenStyle    lipgloss.Style
+	orangeStyle   lipgloss.Style
+	redStyle      lipgloss.Style
 
 	// Default vars
 	labelWidth  = 15
 	GreenUntil  = 65
 	OrangeUntil = 85
 )
+
+// Default color scheme (Catppuccin Macchiato)
+var defaultColors = ColorsConfig{
+	Header:   "#ea76cb", // latte pink
+	Title:    "#8bd5ca", // macchiatto teal
+	Label:    "#c6a0f6", // macchiatto mauve
+	User:     "#f5a97f", // macchiatto peach
+	FQDN:     "#eed49f", // macchiatto yellow
+	Dim:      "#494d64", // macchiatto surface 1
+	Active:   "#a6da95", // macchiatto green
+	Inactive: "#ee99a0", // macchiatto maroon
+	Failed:   "#ed8796", // macchiatto red
+	Green:    "#a6da95", // macchiatto green
+	Orange:   "#f5a97f", // macchiatto peach
+	Red:      "#ed8796", // macchiatto red
+}
 
 func main() {
 	configPath := flag.String("config", "", "Path to config file")
@@ -114,6 +115,8 @@ func main() {
 	}
 
 	config := loadConfig(*configPath)
+	// Initialize styles with colors from config (or defaults)
+	initStyles(config.Colors)
 
 	// Set label width from config if provided
 	if config.Display.LabelWidth > 0 {
@@ -152,6 +155,104 @@ func loadConfig(customPath string) Config {
 	}
 
 	return config
+}
+
+func initStyles(colors ColorsConfig) {
+	// Merge config colors with defaults
+	if colors.Header == "" {
+		colors.Header = defaultColors.Header
+	}
+	if colors.Title == "" {
+		colors.Title = defaultColors.Title
+	}
+	if colors.Label == "" {
+		colors.Label = defaultColors.Label
+	}
+	if colors.User == "" {
+		colors.User = defaultColors.User
+	}
+	if colors.FQDN == "" {
+		colors.FQDN = defaultColors.FQDN
+	}
+	if colors.Dim == "" {
+		colors.Dim = defaultColors.Dim
+	}
+	if colors.Active == "" {
+		colors.Active = defaultColors.Active
+	}
+	if colors.Inactive == "" {
+		colors.Inactive = defaultColors.Inactive
+	}
+	if colors.Failed == "" {
+		colors.Failed = defaultColors.Failed
+	}
+	if colors.Green == "" {
+		colors.Green = defaultColors.Green
+	}
+	if colors.Orange == "" {
+		colors.Orange = defaultColors.Orange
+	}
+	if colors.Red == "" {
+		colors.Red = defaultColors.Red
+	}
+
+	// Initialize styles with structure + colors
+	headerStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color(colors.Header)).
+		BorderStyle(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(colors.Header)).
+		Padding(0, 1)
+
+	titleStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color(colors.Title))
+
+	// Initialize styles with structure + colors
+	headerStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color(colors.Header)).
+		BorderStyle(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(colors.Header)).
+		Padding(0, 1)
+
+	titleStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color(colors.Title))
+
+	labelStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color(colors.Label))
+
+	userStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color(colors.User))
+
+	fqdnStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color(colors.FQDN))
+
+	dimStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(colors.Dim))
+
+	activeStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(colors.Active))
+
+	inactiveStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(colors.Inactive))
+
+	failedStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(colors.Failed))
+
+	greenStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(colors.Green))
+
+	orangeStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(colors.Orange))
+
+	redStyle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(colors.Red))
+
 }
 
 func displayInfo(config Config) {
