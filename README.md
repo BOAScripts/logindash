@@ -17,7 +17,7 @@ The dashboard is configurable via a TOML file and can be integrated into your
 | **Dynamic storage** | Scan `/mnt` for new mounts automatically. |
 | **Service monitoring** | Show the status of any systemd service you care about. |
 | **Portable** | Standard Linux utilities depedencies (`top`, `free`, `df`, `systemctl`, etc.). |
-| **Custom labels** | Customize the colors & spacing (`label_width`) |
+| **Customizable** | Remove unwanted labels, change colors or adjust `label_width` via `config.toml` |
 
 ## Installation/Updating
 
@@ -54,7 +54,7 @@ curl -fsSL "https://raw.githubusercontent.com/BOAScripts/logindash/refs/heads/ma
 
   ```bash
   mkdir -p ~/.config/logindash
-  cp config/config.toml .config/logindash/config.toml
+  cp config/config.toml ~/.config/logindash/config.toml
   ```
 
 ## Usage
@@ -66,8 +66,8 @@ logindash
 ### Options
 
 | Options | Description |
-| -- | -- |
-| `--config <string>` | Path to the configuration file|
+| ------- | ----------- |
+| `--config <path>` | Path to the configuration file |
 | `-h`, `--help` | Show help |
 
 Default config path: `~/.config/logindash/config.toml`.
@@ -92,12 +92,22 @@ Open `~/.config/logindash/config.toml`:
 
 ```toml
 [display]
-label_width = 15 # default:15
-green_until = 65 # default:65
-orange_until = 85 # default:85
+label_width = 15 # default = 15
+green_until = 65 # default = 65
+orange_until = 85 # default = 85
+
+[display.options]
+"system.os" = true
+"system.uptime" = true
+"system.cpu" = true
+"system.ram" = true
+"system.ip" = true
+"system.gateway" = false
+"system.dns" = false
+"storage.root" = true
 
 [colors]
-header = "#91d7e3"
+header = "#ea76cb"
 title = "#8bd5ca"
 label = "#c6a0f6"
 user = "#f5a97f"
@@ -125,11 +135,12 @@ monitored = [
 | -- | -- |
 | `display.label_width` | Width of the left‑hand label column. This ensure the values to be on the same x-axis |
 | `display.green_until` `orange_until` | Thresholds for colour coding the usage percentages. (green from 0 to 65, orange from 66 to 85, rest is red) |
+| `display.options.{item}` | Set to false if you want to hide specific items |
 | `colors.{item}` | Color overwrite, HEX code recommended |
 | `disks.paths` | Additional paths to display disk usage for. If it's not mounted it won't be displayed |
 | `services.monitored` | Systemd services to monitor |
 
-## Customisation
+## Customization
 
 - **Thresholds** – Adjust `green_until` and `orange_until` to suit your monitoring style.
 - **Mount detection** – The program automatically scans `/mnt` for new mounts. You can add paths in the config as needed.
@@ -137,4 +148,4 @@ monitored = [
 
 ## Disclaimer
 
-> This has been written with the help of some AIs (Claude Sonnet 4.5 & gpt-oss). Sorry for the slop
+> This project was assisted by AI tools (Claude Sonnet 4.5 & gpt-oss) - apologies for any oversight.
